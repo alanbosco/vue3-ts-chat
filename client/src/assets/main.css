@@ -1,0 +1,12 @@
+/* @import './base.css'; */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import './components/button.css';
+
+body {
+  @apply bg-white dark:bg-dark-bg-100;
+  @apply text-slate-800 dark:text-white;
+  @apply font-sans;
+}
