@@ -6,10 +6,13 @@ const isLoading = ref(false)
 const value = ref('')
 
 const onSubmit = () => {
+  if (!value.value) {
+    return
+  }
+
   isLoading.value = true
 
   sendChat(value.value, () => {
-    console.log('Message sent', value.value)
     isLoading.value = false
     value.value = ''
   })

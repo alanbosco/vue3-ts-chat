@@ -14,8 +14,16 @@ app.get('/', (_req, res) => {
   res.json({ message: 'Hello World!'});
 });
 
+const users = new Map();
+
 io.on('connection', (socket)=>{
     console.log('a user connected');
+    
+    socket.on('join', (username)=>{
+        users.set(socket.id, username);
+        console.log('user joined: ' + username);
+        socket.broadcast.emit('chat', 'server: ' + username + ' joined');
+    })
 
     socket.on('disconnect', ()=>{
         console.log('user disconnected');

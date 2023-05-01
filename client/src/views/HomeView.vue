@@ -1,49 +1,33 @@
-<script setup lang="ts">
-import ChatItem from '@/components/chat/ChatItem.vue'
-import ConnectionStatus from '@/components/chat/ConnectionStatus.vue'
-import ConnectionManager from '@/components/chat/ConnectionManager.vue'
-import ChatInput from '@/components/chat/ChatInput.vue'
-import ChatArea from '@/components/chat/ChatArea.vue'
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-import { state } from '@/socket'
+const router = useRouter()
+const username = ref('')
 
-const chatsData = [
-  {
-    message: 'Send me a message',
-    sender: 'John',
-    time: '20:10',
-    id: 1
+const onSubmit = () => {
+  if (!username.value) {
+    return
   }
-]
+
+  router.push({ name: 'chat', query: { username: username.value } })
+}
 </script>
 
 <template>
-  <main class="px-4 mx-auto">
-    <div class="grid grid-cols-5 gap-4 min-h-screen max-h-screen">
-      <div class="col-span-1 p-4">
-        <div class="chat-list">
-          <chat-item
-            v-for="chat in chatsData"
-            :key="chat.id"
-            :message="chat.message"
-            :sender="chat.sender"
-            :time="chat.time"
-          />
-        </div>
-      </div>
-      <div class="col-span-4 dark:bg-dark-bg-200 p-4 flex flex-col">
-        <h5>Chat Details</h5>
-        <div class="relative flex-1">
-          <div class="chat-head flex justify-between items-center">
-            <connection-status />
-            <div>
-              <connection-manager />
-            </div>
-          </div>
-          <chat-area :messages="state.chats" />
-          <chat-input class="absolute w-full bottom-0" />
-        </div>
-      </div>
+  <main class="h-screen w-full flex items-center justify-center">
+    <div class="card">
+      <h6 class="text-xl">Welcome</h6>
+      <p class="text-sm text-gray-400">Please enter a username to join the chat.</p>
+      <form class="flex mt-10" @submit.prevent="onSubmit">
+        <input
+          v-model="username"
+          type="text"
+          placeholder="Username"
+          class="rounded-md text-slate-950 p-3"
+        />
+        <button class="w-24 ml-3 bg-blue-700 hover:bg-blue-600" type="submit">Join</button>
+      </form>
     </div>
   </main>
 </template>
