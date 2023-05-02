@@ -14,6 +14,12 @@ app.get('/', (_req, res) => {
   res.json({ message: 'Hello World!'});
 });
 
+interface Message {
+    message: string,
+    sender: string,
+    type: string,
+}
+
 const users = new Map();
 
 io.on('connection', (socket)=>{
@@ -22,7 +28,7 @@ io.on('connection', (socket)=>{
     socket.on('join', (username)=>{
         users.set(socket.id, username);
         console.log('user joined: ' + username);
-        socket.broadcast.emit('chat', 'server: ' + username + ' joined');
+        socket.broadcast.emit('chat', {message: username + ' joined the chat', sender: 'server', type: 'info'});
     })
 
     socket.on('disconnect', ()=>{
@@ -32,8 +38,9 @@ io.on('connection', (socket)=>{
     socket.on('chat', (msg, fn)=>{
         console.log('message: ' + msg);
         // io.emit('chat', msg);
-        socket.broadcast.emit('chat', msg);
-        fn('server: ' + msg)
+        const chat = {message: msg, sender: users.get(socket.id), type: 'message'}
+        socket.broadcast.emit('chat', chat);
+        fn(chat)
     })
 })
 

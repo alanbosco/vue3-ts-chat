@@ -2,8 +2,9 @@ import { reactive } from 'vue'
 import { io } from 'socket.io-client'
 
 export interface Chat {
-    message: string
-    sender: string
+    message: { message: string, type?: string, sender?: string}
+    sender: string,
+    type?: string,
 }
 
 export const state = reactive({
@@ -27,6 +28,7 @@ socket.on('chat', (message) => {
     console.log('message recived', message)
     state.chats.push({
         message: message,
+        type: 'message',
         sender: 'other',
     })
 })
@@ -42,7 +44,7 @@ export const sendChat = (message: string, cb?: Function) => {
     socket.emit('chat', message, () => {
         console.log('Message sent', message)
         state.chats.push({
-            message,
+            message: {message, type: 'message'},
             sender: 'me',
         })
         if (cb) cb()

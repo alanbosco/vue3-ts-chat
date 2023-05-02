@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import { VitePluginNode } from 'vite-plugin-node';
-import liveReload from 'vite-plugin-live-reload';
 
 export default defineConfig({
   // ...vite configures
@@ -20,7 +19,7 @@ export default defineConfig({
 
       // Optional, default: 'viteNodeApp'
       // the name of named export of you app from the appPath file
-      exportName: 'viteNodeApp',
+      exportName: 'server',
 
       // Optional, default: 'esbuild'
       // The TypeScript compiler you want to use
@@ -46,7 +45,6 @@ export default defineConfig({
       // swc configs, see [swc doc](https://swc.rs/docs/configuration/swcrc)
       swcOptions: {}
     }),
-    liveReload('./src/**/*.ts'),
   ],
   optimizeDeps: {
     // Vite does not work well with optionnal dependencies,
